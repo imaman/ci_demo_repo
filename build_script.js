@@ -42,7 +42,7 @@ new Promise((resolve, reject) => {
     }); 
 }).then(() => {
     const params = {
-        output: '-OK-',
+        output: '"-OK-"',
         taskToken
     };
     stepfunctions.sendTaskSuccess(params).promise()
