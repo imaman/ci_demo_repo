@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "mocha",
+    "build": "node build_script",
     "test": "mocha"
   },
   "repository": {
@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/imaman/ci_demo_repo#readme",
   "devDependencies": {
+    "aws-sdk": "^2.578.0",
     "mocha": "^6.2.2"
   }
 }
