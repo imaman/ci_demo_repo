@@ -25,7 +25,7 @@ function extractToken(processArgv) {
 
 console.log('args=' + JSON.stringify(process.argv))
 const taskToken = extractToken(process.argv)
-console.log('stepfunction token=' + token)
+console.log('stepfunction token=' + taskToken)
 
 new Promise((resolve, reject) => {    
     const child = spawn('npm', ['run', 'test']);
