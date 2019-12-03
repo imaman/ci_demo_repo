@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "node build_script",
-    "test": "mocha --reporter=tap,json"
+    "test": "mocha -R mocha-spec-json-output-reporter --reporter-options fileName=wix_build_machine.json,filePath=/tmp > /tmp/wix_build_machine.log"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
   "homepage": "https://github.com/imaman/ci_demo_repo#readme",
   "devDependencies": {
     "aws-sdk": "^2.578.0",
-    "mocha": "^6.2.2"
+    "mocha": "^6.2.2",
+    "mocha-spec-json-output-reporter": "^1.1.7"
   }
 }
