@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "node build_script",
-    "test": "mocha"
+    "test": "mocha --reporter=tap,json"
   },
   "repository": {
     "type": "git",
