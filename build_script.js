@@ -40,7 +40,13 @@ new Promise((resolve, reject) => {
     }); 
 }).then(() => {
     const params = {
-        output: '"-OK-"',
+        output: JSON.stringify({status: "-OK-"}),
+        taskToken
+    };
+    stepfunctions.sendTaskSuccess(params).promise()
+}).catch(err => {
+    const params = {
+        output: JSON.stringify({status: "-FAILED-", casuse: err}),
         taskToken
     };
     stepfunctions.sendTaskSuccess(params).promise()
