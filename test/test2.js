@@ -4,7 +4,7 @@ describe('foo', function() {
         assert.equal(4 + 9, 13);
     });
     it('should do multiplcation', () => {
-        assert.equal(4 * 9, 35);
+        assert.equal(4 * 9, 36);
     });
 });
 
