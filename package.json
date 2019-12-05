@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "node build_script",
-    "test": "mocha -R mocha-spec-json-output-reporter --reporter-options fileName=wix_build_machine.json,filePath=/tmp > /tmp/wix_build_machine.log"
+    "test": "mocha --reporter my-reporter.js   --reporterOptions outputFile=/tmp/wix_build_machine.json > /tmp/wix_build_machine.log"
   },
   "repository": {
     "type": "git",
