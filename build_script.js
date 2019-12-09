@@ -2,12 +2,13 @@ const { spawn } = require('child_process');
 const AWS = require('aws-sdk')
 const fs = require('fs')
 const path = require('path')
+const glob = require("glob")
 
 var stepfunctions = new AWS.StepFunctions();
 
 const args = process.argv.slice(2)
 
-function extractToken(flag) {
+function extractFlag(flag) {
     const index = args.indexOf(flag)
     if (index < 0) {
         throw new Error(`Missing flag: ${flag}`)
@@ -25,9 +26,12 @@ function extractToken(flag) {
     return token
 }
 
-const taskToken = extractToken('--step-function-task-token')
-const s3Bucket = extractToken('--s3Bucket')
-const s3Prefix = extractToken('--s3Prefix')
+
+const taskToken = extractFlag('--step-function-task-token')
+const s3Bucket = extractFlag('--s3Bucket')
+const s3Prefix = extractFlag('--s3Prefix')
+const shardId = extractFlag('--shardId')
+
 const s3 = new AWS.S3()
 
 const LIMIT = 1000 * 1000 // 1 MB
@@ -42,11 +46,12 @@ async function upload(fileToUpload) {
     return s3.putObject({Bucket: s3Bucket, Key: key, Body: str}).promise()
 }
 
-
 new Promise((resolve, reject) => {    
-    const child = spawn('npm', ['run', 'test']);
-    child.stdout.pipe(process.stdout);
-    child.stderr.pipe(process.stderr);    
+  const files = glob.sync("test/**/*.js")
+  console.log('files=' + JSON.stringify(files))
+  const child = spawn('npm', ['run', 'test']);
+  child.stdout.pipe(process.stdout);
+  child.stderr.pipe(process.stderr);    
 
     child.on('exit', async (code) => {
       console.log(`child process exited with code ${code}`);
