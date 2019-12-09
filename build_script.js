@@ -30,8 +30,16 @@ function extractFlag(flag) {
 const taskToken = extractFlag('--step-function-task-token')
 const s3Bucket = extractFlag('--s3Bucket')
 const s3Prefix = extractFlag('--s3Prefix')
-const shardId = extractFlag('--shardId')
+const shardId = Number(extractFlag('--shardId'))
+const numShards = Number(extractFlag('--numShards'))
 
+if (!Number.isInteger(numShards) || numShards <= 0) {
+  throw new Error(`--numShards must be a positive integer (was ${numShards})`)
+}
+
+if (!Number.isInteger(shardId) || shardId < 0 || shardId >= numShards) {
+  throw new Error(`--shardId must be an integer in the range [0, ${numShards}) (was ${shardId})`)
+}
 const s3 = new AWS.S3()
 
 const LIMIT = 1000 * 1000 // 1 MB
@@ -49,7 +57,19 @@ async function upload(fileToUpload) {
 new Promise((resolve, reject) => {
   const files = glob.sync("test/**/*.js")
   console.log('files=' + JSON.stringify(files))
-  const child = spawn('npm', ['run', 'test']);
+  files.sort((lhs, rhs) => lhs.localeCompare(rhs))
+  const buckets = []
+  for (let i = 0; i < numShards; ++i) {
+    buckets.push([])
+  }
+
+  for (let i = 0; i < files.length; ++i) {
+    buckets[i % buckets.length].push(files[i])
+  }
+
+  const argsToNpm = ['run', 'test', '--']
+  buckets[shardId].forEach(curr => argsToNpm.push(curr))
+  const child = spawn('npm', argsToNpm);
   child.stdout.pipe(process.stdout);
   child.stderr.pipe(process.stderr);
 
