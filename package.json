@@ -20,7 +20,7 @@
   "homepage": "https://github.com/imaman/ci_demo_repo#readme",
   "devDependencies": {
     "aws-sdk": "^2.578.0",
-    "mocha": "^6.2.2",
+    "mocha": "^10.2.0",
     "mocha-spec-json-output-reporter": "^1.1.7"
   }
 }
